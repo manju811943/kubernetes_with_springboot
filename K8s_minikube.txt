@@ -1,0 +1,74 @@
+
+
+Deployment Springboot in Kubernetes with Minikube:
+ 
+1. Set up minikube by following up steps 
+
+	Step-1 :  Setup Linux VM
+				Login into AWS Cloud account
+				Create Linux VM with Ubuntu AMI (t2.medium or t3.medium)
+				Select Storage as 50 GB (Default is 8 GB only for Linux)
+				Create Linux VM and connect to it using SSH Client
+				
+	Step-2 : Install Docker In Ubuntu VM
+				 sudo apt update
+				 curl -fsSL get.docker.com | /bin/bash
+				 sudo usermod -aG docker ubuntu 
+				 exit
+			 
+	Step-3 : Updating system packages and installing Minikube dependencies
+				sudo apt update
+				sudo apt install -y curl wget apt-transport-https
+				
+	Step-4 : Installing Minikube
+				curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+				sudo install minikube-linux-amd64 /usr/local/bin/minikube
+				minikube version
+			
+	Step-5 : Install Kubectl (Kubernetes Client)
+				curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+				chmod +x kubectl
+				sudo mv kubectl /usr/local/bin/
+				kubectl version -o yaml
+	
+	Step-6 : Start MiniKube Server
+				minikube start — driver=docker
+				
+	Step-7 : Check MiniKube status
+				minikube status
+				
+	Step-8 : Access K8S Cluster
+				kubectl cluster-info
+				
+	Step-9 : Access K8S Nodes
+				kubectl get nodes
+				
+	==> install
+			sudo apt-get update -y
+			sudo apt-get install maven -y
+
+
+2. check minikube status -> should up and running
+3. get the code from guthub -> git clone <repo>
+4. mvn clean package -> it will geneare .jar file in target folder
+5. create image -> docker build -t <app name>: version eg: docker build -t docker-example:v1
+6. docker images -> display the images - note image name
+7. create .yml file -> to create pods and service Eg:docker-example.yml
+8. kubectl apply -f <manifest file> Eg: kubectl apply -f docker-example.yml -> It will deploy your images pod's container
+9. run minikube ip -> to get minikube ip 
+10. run in gibash - curl <minikube ip>: <node port> / <api mapping> Eg: curl http://<EC2-PUBLIC-IP>:80/api/v1/message
+
+11. to call same API in browser or postman
+		to enable minkube to EC2
+			sudo -E kubectl port-forward svc/minikubeservice 8080:80 --address=0.0.0.
+				(or)
+			sudo kubectl port-forward svc/minikubeservice 8080:80 --address=0.0.0.0
+			
+		after running above commands you should see
+			Forwarding from 0.0.0.0:8080 -> 80
+
+12. finally, http://<ec2 public ip>:8080/api/v1/message Eg:http://15.206.204.207:8080/api/v1/message
+
+
+
+
