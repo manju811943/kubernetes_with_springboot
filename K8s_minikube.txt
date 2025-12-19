@@ -51,7 +51,7 @@ Deployment Springboot in Kubernetes with Minikube:
 2. check minikube status -> should up and running
 3. get the code from guthub -> git clone <repo>
 4. mvn clean package -> it will geneare .jar file in target folder
-5. create image -> docker build -t <app name>: version eg: docker build -t docker-example:v1
+5. create image -> docker build -t <app name>: version . eg: docker build -t docker-example:v1 .
 6. docker images -> display the images - note image name
 7. create .yml file -> to create pods and service Eg:docker-example.yml
 8. kubectl apply -f <manifest file> Eg: kubectl apply -f docker-example.yml -> It will deploy your images pod's container
@@ -68,6 +68,7 @@ Deployment Springboot in Kubernetes with Minikube:
 			Forwarding from 0.0.0.0:8080 -> 80
 
 12. finally, http://<ec2 public ip>:8080/api/v1/message Eg:http://15.206.204.207:8080/api/v1/message
+
 
 
 
