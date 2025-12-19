@@ -60,14 +60,16 @@ Deployment Springboot in Kubernetes with Minikube:
 
 11. to call same API in browser or postman
 		to enable minkube to EC2
-			sudo -E kubectl port-forward svc/minikubeservice 8080:80 --address=0.0.0.
+			sudo -E kubectl port-forward svc/minikubeservice 8080:80 --address=0.0.0.0
 				(or)
 			sudo kubectl port-forward svc/minikubeservice 8080:80 --address=0.0.0.0
-			
+			sudo kubectl port-forward svc/minikubeservice 9090:9090 --address=0.0.0.0
+
 		after running above commands you should see
 			Forwarding from 0.0.0.0:8080 -> 80
 
 12. finally, http://<ec2 public ip>:8080/api/v1/message Eg:http://15.206.204.207:8080/api/v1/message
+
 
 
 
