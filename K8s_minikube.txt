@@ -71,6 +71,87 @@ Deployment Springboot in Kubernetes with Minikube:
 12. finally, http://<ec2 public ip>:8080/api/v1/message Eg:http://15.206.204.207:8080/api/v1/message
 
 
+13. sample manifest file
+		eg: ecommerce.yml  -> for springboot
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ecommercedeployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: ecommerce         # Must match pod template labels
+  template:
+    metadata:
+      labels:
+        app: ecommerce
+    spec:
+      containers:
+        - name: minikubecontainer
+          image: 811943/ecommerce:v1
+          ports:
+            - containerPort: 9090
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: minikubeservice
+spec:
+  type: NodePort
+  selector:
+    app: ecommerce           # Must match pod labels
+  ports:
+    - port: 9090
+      targetPort: 9090
+      nodePort: 30090
+
+
+14. for Front end deloyment
+	same as BE follow all the steps till creation of pods,
+	once pods are created 
+	need do port-forword
+	Eg: kubectl port-forward svc/angular-service 8080:80 --address 0.0.0.0
+
+	so, to load FE into Browser use below url
+	http://<EC2_PUBLIC_IP>:8080  eg: http://13.202.91.87:8080/
+
+	sample manifest file for BE
+	---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: angular-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: angular-app         # Must match pod template labels
+  template:
+    metadata:
+      labels:
+        app: angular-app
+    spec:
+      containers:
+        - name: angular-container
+          image: 811943/angular-ecommerce:v1
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: angular-service
+spec:
+  type: NodePort
+  selector:
+    app: angular-app          # Must match pod labels
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 30080
 
 
 
