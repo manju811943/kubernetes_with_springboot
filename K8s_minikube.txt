@@ -154,5 +154,12 @@ spec:
       nodePort: 30080
 
 
+to push docker image docker hub
+	1. docker tag rest-spring-boot:v1 811943/rest-spring-boot:v1
+	2. docker login 
+					it will give url to open in browser amd please enter otp in browser to validate
+	3. docker push 811943/rest-spring-boot:v1
+
+
 
 
