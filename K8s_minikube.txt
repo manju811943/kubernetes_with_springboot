@@ -161,5 +161,52 @@ to push docker image docker hub
 	3. docker push 811943/rest-spring-boot:v1
 
 
+=> Sample Docker file for BE:	
+	FROM mcr.microsoft.com/openjdk/jdk:21-azurelinux
+	COPY target/ecommerce.jar  /usr/app/
+	WORKDIR /usr/app/
+	EXPOSE 9090
+	ENTRYPOINT ["java", "-jar", "ecommerce.jar"]
+
+
+=> Sample Dockerfile for FE:
+	# ----------------------------
+	# Stage 1: Build Angular App
+	# ----------------------------
+	FROM node:21-alpine AS build
+	
+	WORKDIR /app
+	
+	# Copy package files first (for caching)
+	COPY package*.json ./
+	
+	# Install dependencies
+	RUN npm install
+	
+	# Copy application source
+	COPY . .
+	
+	# Build Angular app (adjust if project name differs)
+	RUN npm run build -- --configuration=production
+	
+	# ----------------------------
+	# Stage 2: Nginx Server
+	# ----------------------------
+	FROM nginx:alpine
+	
+	# Remove default nginx static files
+	RUN rm -rf /usr/share/nginx/html/*
+	
+	# Copy Angular build output to nginx
+	COPY --from=build /app/dist/angular-ecommerce/browser /usr/share/nginx/html
+	
+	# Expose port 80
+	EXPOSE 80
+	
+	# Start nginx
+	CMD ["nginx", "-g", "daemon off;"]
+
+
+
 
 
